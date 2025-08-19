@@ -1,0 +1,25 @@
+{
+  "name": "ottes-dmx-agent",
+  "version": "1.0.0",
+  "description": "DMX Controller Agent für Par Light B262 mit Animationsunterstützung",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "dmx",
+    "lighting",
+    "animation",
+    "par-light",
+    "rgb"
+  ],
+  "author": "ottes",
+  "license": "ISC",
+  "dependencies": {
+    "dmx": "^0.25.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
