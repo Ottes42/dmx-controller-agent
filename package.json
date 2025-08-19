@@ -1,5 +1,5 @@
 {
-  "name": "ottes-dmx-agent",
+  "name": "dmx-controller-agent",
   "version": "1.0.0",
   "description": "DMX Controller Agent für Par Light B262 mit Animationsunterstützung",
   "main": "index.js",
