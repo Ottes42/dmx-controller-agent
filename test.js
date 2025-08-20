@@ -1,21 +1,21 @@
 const DMX = require('dmx')
-const ParLightB262 = require('./ParLightB262');
+const ParLightB262 = require('./devices/ParLightB262')
 
-const dmx = new DMX();
-const universe = dmx.addUniverse('ottes', 'enttec-open-usb-dmx', 'COM5');
-const parLight = new ParLightB262(universe, 1);
+const dmx = new DMX()
+const universe = dmx.addUniverse('ottes', 'enttec-open-usb-dmx', 'COM5')
+const parLight = new ParLightB262(universe, 1)
 
-parLight.turnOn(255, ParLightB262.COLORS.GREEN);
+parLight.turnOn(255, ParLightB262.COLORS.GREEN)
 
 setTimeout(() => {
-    parLight.setColor(ParLightB262.COLORS.RED);
-    parLight.fadeToColor(ParLightB262.COLORS.BLUE, 2000, 'linear', () => {
-        parLight.fadeDimmer(100, 2000, 'inOutCubic', () => {
-            parLight.turnOff();
-            process.exit(0);
-        });
-    });
-}, 2000);
+  parLight.setColor(ParLightB262.COLORS.RED)
+  parLight.fadeToColor(ParLightB262.COLORS.BLUE, 2000, 'linear', () => {
+    parLight.fadeDimmer(100, 2000, 'inOutCubic', () => {
+      parLight.turnOff()
+      process.exit(0)
+    })
+  })
+}, 2000)
 
 // setTimeout(() => {
 //     parLight.startColorCycle([

@@ -29,6 +29,7 @@ open http://localhost:3000
 - 🎪 **[Effects & Easing](docs/effects.md)** - Alle Lichteffekte erklärt
 - 🔌 **[API Reference](docs/api.md)** - REST API Dokumentation
 - 🔗 **[Integration Examples](docs/integrations.md)** - Home Assistant, Discord, n8n & mehr
+- 🛠️ **[Development Guide](docs/development.md)** - Entwicklungsrichtlinien & Standards
 
 ## ⚙️ Hardware
 
@@ -56,6 +57,7 @@ DMX_DEVICE=COM5     # DMX interface device
 npm start    # Production server
 npm run dev  # Development with nodemon  
 npm test     # Run test sequence
+npm run lint # Check code style
 ```
 
 ## 🎮 Quick API Examples
@@ -82,19 +84,47 @@ Designed for use with:
 
 ```
 dmx/
-├── docs/              # Documentation
-├── public/            # Web interface
-├── ParLightB262.js    # Device driver
-├── api.js            # REST routes
-└── index.js          # Main server
+├── src/                    # Hauptquellcode
+│   ├── index.js           # Express Server & Startup
+│   └── api.js             # REST API Routes
+├── devices/               # DMX Geräte-Abstraktionen  
+│   └── ParLightB262.js    # Par Light B262 Geräteklasse
+├── docs/                  # Dokumentation
+│   ├── usage.md          # Anwendungshandbuch
+│   ├── api.md            # API Referenz
+│   ├── effects.md        # Effekte & Easing
+│   ├── integrations.md   # Integration-Beispiele
+│   └── development.md    # Entwicklungsrichtlinien
+├── public/               # Web Interface
+│   ├── index.html       # Frontend HTML
+│   ├── style.css        # Styling
+│   └── script.js        # Frontend JavaScript
+├── scripts/              # Setup & Utility Scripts
+│   └── setup-dev.sh     # Entwicklungsumgebung Setup
+├── .husky/              # Git Hooks (Husky)
+├── test.js              # Test-Sequenzen
+├── package.json         # Dependencies & Scripts
+└── README.md           # Diese Datei
+```
+
+## 🚀 Zukünftige Erweiterungen
+
+```
+devices/
+├── ParLightB262.js      # Aktuell
+├── MovingHead.js        # Geplant  
+├── LaserProjector.js    # Geplant
+└── base/                # Abstrakte Basisklassen
+    └── DMXDevice.js
 ```
 
 ## 🤝 Contributing
 
 1. Fork the repo
 2. Create feature branch
-3. Add tests for new effects
-4. Submit PR
+3. Follow [development guidelines](docs/development.md)
+4. Add tests for new effects
+5. Submit PR
 
 ## 📄 License
 
