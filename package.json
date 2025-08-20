@@ -39,6 +39,11 @@
     ],
     "globals": [
       "fetch"
+    ],
+    "ignore": [
+      "node_modules",
+      "docs",
+      "public/script.js"
     ]
   },
   "lint-staged": {
