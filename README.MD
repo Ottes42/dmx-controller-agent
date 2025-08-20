@@ -28,7 +28,6 @@ Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interf
 - 🔌 **REST API** für programmatische Integration  
 - 🎨 **6 Animationstypen** mit 25+ Easing-Funktionen
 - 📱 **Responsive Design** für Mobile/Desktop
-- ⚡ **Graceful Shutdown** mit automatischem Licht-Aus
 - 🐳 **Docker Support** für einfache Bereitstellung
 
 ## 🚀 Quick Start
@@ -73,7 +72,6 @@ open http://localhost:3000
 | Platform | Status | Notes |
 |----------|--------|-------|
 | ✅ Windows | Ready | COM-Port supported |
-| 🚧 WSL2 | WIP | USB passthrough needed |
 | 🎯 Raspberry Pi | Ready | Docker recommended |
 | 🐳 Docker | Ready | All platforms supported |
 
@@ -93,11 +91,6 @@ npm run dev     # Development with nodemon
 npm test        # Run test sequence
 npm run lint    # Check code style (Standard.js)
 npm run lint:fix # Auto-fix code style issues
-
-# Docker commands
-docker-compose up -d      # Start services
-docker-compose logs -f    # View logs
-docker-compose down       # Stop services
 ```
 
 ## 🎮 Quick API Examples
