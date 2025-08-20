@@ -2,6 +2,23 @@
 
 Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interface und REST API.
 
+## 📑 Table of Contents
+
+- [🎭 DMX Controller Agent](#-dmx-controller-agent)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
+  - [🚀 Quick Start](#-quick-start)
+  - [📚 Dokumentation](#-dokumentation)
+  - [⚙️ Hardware](#️-hardware)
+  - [🖥️ Plattformen](#️-plattformen)
+  - [🔧 Environment](#-environment)
+  - [📋 Scripts](#-scripts)
+  - [🎮 Quick API Examples](#-quick-api-examples)
+  - [🏗️ Integration](#️-integration)
+  - [📁 Project Structure](#-project-structure)
+  - [🤝 Contributing](#-contributing)
+  - [📄 License](#-license)
+
 ## ✨ Features
 
 - 🌐 **Web-Interface** für intuitive manuelle Steuerung
@@ -54,10 +71,11 @@ DMX_DEVICE=COM5     # DMX interface device
 ## 📋 Scripts
 
 ```bash
-npm start    # Production server
-npm run dev  # Development with nodemon  
-npm test     # Run test sequence
-npm run lint # Check code style
+npm start       # Production server
+npm run dev     # Development with nodemon  
+npm test        # Run test sequence
+npm run lint    # Check code style (Standard.js)
+npm run lint:fix # Auto-fix code style issues
 ```
 
 ## 🎮 Quick API Examples
@@ -65,11 +83,16 @@ npm run lint # Check code style
 ```bash
 # Turn on light
 curl -X POST http://localhost:3000/api/light/on \
+  -H "Content-Type: application/json" \
   -d '{"color":"blue","intensity":200}'
 
 # Start rainbow animation
 curl -X POST http://localhost:3000/api/animation/rainbow \
+  -H "Content-Type: application/json" \
   -d '{"duration":5000}'
+
+# Get status
+curl http://localhost:3000/api/status
 ```
 
 ## 🏗️ Integration
@@ -80,56 +103,57 @@ Designed for use with:
 - **Home automation** systems
 - **Live performance** setups
 
+See [Integration Examples](docs/integrations.md) for detailed implementation guides.
+
 ## 📁 Project Structure
 
 ```
 dmx/
-├── src/                    # Hauptquellcode
+├── src/                    # 🎯 Hauptquellcode
 │   ├── index.js           # Express Server & Startup
 │   └── api.js             # REST API Routes
-├── devices/               # DMX Geräte-Abstraktionen  
+├── devices/               # 🔌 DMX Geräte-Abstraktionen  
 │   └── ParLightB262.js    # Par Light B262 Geräteklasse
-├── docs/                  # Dokumentation
+├── docs/                  # 📚 Dokumentation
 │   ├── usage.md          # Anwendungshandbuch
 │   ├── api.md            # API Referenz
 │   ├── effects.md        # Effekte & Easing
 │   ├── integrations.md   # Integration-Beispiele
 │   └── development.md    # Entwicklungsrichtlinien
-├── public/               # Web Interface
+├── public/               # 🌐 Web Interface
 │   ├── index.html       # Frontend HTML
 │   ├── style.css        # Styling
 │   └── script.js        # Frontend JavaScript
-├── scripts/              # Setup & Utility Scripts
+├── scripts/              # 🛠️ Setup & Utility Scripts
 │   └── setup-dev.sh     # Entwicklungsumgebung Setup
-├── .husky/              # Git Hooks (Husky)
-├── test.js              # Test-Sequenzen
-├── package.json         # Dependencies & Scripts
-└── README.md           # Diese Datei
-```
-
-## 🚀 Zukünftige Erweiterungen
-
-```
-devices/
-├── ParLightB262.js      # Aktuell
-├── MovingHead.js        # Geplant  
-├── LaserProjector.js    # Geplant
-└── base/                # Abstrakte Basisklassen
-    └── DMXDevice.js
+├── .husky/              # 🪝 Git Hooks (Standard.js)
+├── test.js              # 🧪 Test-Sequenzen
+├── package.json         # 📦 Dependencies & Scripts
+└── README.md           # 📖 Diese Datei
 ```
 
 ## 🤝 Contributing
 
-1. Fork the repo
-2. Create feature branch
-3. Follow [development guidelines](docs/development.md)
-4. Add tests for new effects
-5. Submit PR
+1. **Fork** the repository
+2. **Create** feature branch (`git checkout -b feature/amazing-animation`)
+3. **Follow** [development guidelines](docs/development.md)
+4. **Add** tests for new functionality
+5. **Commit** changes (`git commit -m 'Add amazing animation'`)
+6. **Push** to branch (`git push origin feature/amazing-animation`)
+7. **Submit** Pull Request
+
+See [Development Guide](docs/development.md) for detailed contribution guidelines.
 
 ## 📄 License
 
-ISC - Feel free to use in your projects!
+**ISC** - Feel free to use in your projects!
 
 ---
 
+<div align="center">
+
 *Built with ❤️ for the lighting community*
+
+**[⬆ Back to Top](#-dmx-controller-agent)**
+
+</div>

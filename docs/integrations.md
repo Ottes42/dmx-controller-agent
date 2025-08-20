@@ -2,6 +2,40 @@
 
 Real-world examples for integrating the DMX Controller Agent with various platforms and systems.
 
+## 📑 Table of Contents
+
+- [🔗 Integration Examples](#-integration-examples)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [🏠 Home Automation](#-home-automation)
+    - [Home Assistant](#home-assistant)
+      - [REST Commands Configuration](#rest-commands-configuration)
+      - [Automation Examples](#automation-examples)
+      - [Dashboard Cards](#dashboard-cards)
+  - [🤖 Chat Bots](#-chat-bots)
+    - [Discord Bot](#discord-bot)
+      - [Basic Bot Setup](#basic-bot-setup)
+      - [Slash Commands](#slash-commands)
+    - [Telegram Bot](#telegram-bot)
+  - [🔄 Workflow Automation](#-workflow-automation)
+    - [n8n Workflows](#n8n-workflows)
+      - [Simple Color Change Workflow](#simple-color-change-workflow)
+      - [Time-based Lighting Workflow](#time-based-lighting-workflow)
+  - [🎮 Gaming Integration](#-gaming-integration)
+    - [OBS Studio Plugin](#obs-studio-plugin)
+    - [Twitch Integration](#twitch-integration)
+  - [🎵 Music Integration](#-music-integration)
+    - [Spotify Integration](#spotify-integration)
+  - [🌐 Web Integration](#-web-integration)
+    - [React Component](#react-component)
+    - [Vue.js Component](#vuejs-component)
+  - [📊 Monitoring \& Analytics](#-monitoring--analytics)
+    - [Prometheus Metrics](#prometheus-metrics)
+  - [🔒 Security Considerations](#-security-considerations)
+    - [API Key Authentication](#api-key-authentication)
+    - [Rate Limiting](#rate-limiting)
+
+---
+
 ## 🏠 Home Automation
 
 ### Home Assistant
@@ -9,6 +43,7 @@ Real-world examples for integrating the DMX Controller Agent with various platfo
 Add DMX lighting control to your Home Assistant setup:
 
 #### REST Commands Configuration
+
 ```yaml
 # configuration.yaml
 rest_command:
@@ -54,6 +89,7 @@ rest_command:
 ```
 
 #### Automation Examples
+
 ```yaml
 # automations.yaml
 
@@ -98,6 +134,7 @@ rest_command:
 ```
 
 #### Dashboard Cards
+
 ```yaml
 # Lovelace card example
 type: vertical-stack
@@ -170,6 +207,7 @@ cards:
 Create a Discord bot for lighting control:
 
 #### Basic Bot Setup
+
 ```javascript
 // discord-bot.js
 const { Client, GatewayIntentBits } = require('discord.js');
@@ -253,6 +291,7 @@ client.login('YOUR_BOT_TOKEN');
 ```
 
 #### Slash Commands
+
 ```javascript
 // slash-commands.js
 const { SlashCommandBuilder } = require('discord.js');
@@ -382,6 +421,7 @@ bot.on('callback_query', async (callbackQuery) => {
 ### n8n Workflows
 
 #### Simple Color Change Workflow
+
 ```json
 {
   "name": "DMX Color Control",
@@ -404,6 +444,7 @@ bot.on('callback_query', async (callbackQuery) => {
 ```
 
 #### Time-based Lighting Workflow  
+
 ```json
 {
   "name": "Daily Lighting Schedule",
@@ -928,5 +969,7 @@ const animationLimiter = rateLimit({
 app.use('/api', limiter);
 app.use('/api/animation', animationLimiter);
 ```
+
+---
 
 This comprehensive integration guide covers the most common use cases and platforms for DMX lighting control integration! 🎭✨

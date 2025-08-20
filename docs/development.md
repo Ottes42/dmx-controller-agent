@@ -49,6 +49,7 @@ git commit -m "Add new feature"
 ### Standard.js Rules
 
 Key rules enforced:
+
 - **2 spaces** for indentation
 - **Single quotes** for strings
 - **No semicolons** (except where required)

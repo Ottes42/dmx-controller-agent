@@ -3,12 +3,13 @@
 Complete REST API documentation for the DMX Controller Agent.
 
 ## Base URL
-```
+
 http://localhost:3000/api
-```
 
 ## Response Format
+
 All API responses follow this format:
+
 ```json
 {
     "success": true|false,
@@ -20,11 +21,13 @@ All API responses follow this format:
 ## 💡 Light Control
 
 ### Turn Light On
+
 **POST** `/light/on`
 
 Turn on the light with optional intensity and color.
 
 **Request Body:**
+
 ```json
 {
     "intensity": 255,    // Optional, 0-255, default: 255
@@ -33,6 +36,7 @@ Turn on the light with optional intensity and color.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/light/on \
   -H "Content-Type: application/json" \
@@ -40,6 +44,7 @@ curl -X POST http://localhost:3000/api/light/on \
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -50,16 +55,19 @@ curl -X POST http://localhost:3000/api/light/on \
 ---
 
 ### Turn Light Off  
+
 **POST** `/light/off`
 
 Turn off the light completely.
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/light/off
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -70,11 +78,13 @@ curl -X POST http://localhost:3000/api/light/off
 ---
 
 ### Set Color
+
 **POST** `/light/color`
 
 Change the light color with optional intensity.
 
 **Request Body:**
+
 ```json
 {
     "color": "red",      // Required, color name
@@ -83,6 +93,7 @@ Change the light color with optional intensity.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/light/color \
   -H "Content-Type: application/json" \
@@ -92,11 +103,13 @@ curl -X POST http://localhost:3000/api/light/color \
 ---
 
 ### Set Master Dimmer
+
 **POST** `/light/dimmer`
 
 Adjust the master brightness level.
 
 **Request Body:**
+
 ```json
 {
     "value": 128    // Required, 0-255
@@ -104,6 +117,7 @@ Adjust the master brightness level.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/light/dimmer \
   -H "Content-Type: application/json" \
@@ -113,11 +127,13 @@ curl -X POST http://localhost:3000/api/light/dimmer \
 ## 🎭 Animations
 
 ### Fade Animation
+
 **POST** `/animation/fade`
 
 Smooth color transition to target color.
 
 **Request Body:**
+
 ```json
 {
     "color": "blue",        // Required, target color name
@@ -127,6 +143,7 @@ Smooth color transition to target color.
 ```
 
 **Available Easing Functions:**
+
 - `linear`, `inQuad`, `outQuad`, `inOutQuad`
 - `inCubic`, `outCubic`, `inOutCubic`  
 - `inQuart`, `outQuart`, `inOutQuart`
@@ -139,6 +156,7 @@ Smooth color transition to target color.
 - `inBounce`, `outBounce`, `inOutBounce`
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/animation/fade \
   -H "Content-Type: application/json" \
@@ -148,11 +166,13 @@ curl -X POST http://localhost:3000/api/animation/fade \
 ---
 
 ### Pulse Animation
+
 **POST** `/animation/pulse`
 
 Rhythmic brightness variation.
 
 **Request Body:**
+
 ```json
 {
     "color": "white",        // Optional, pulse color, default: "white"
@@ -163,6 +183,7 @@ Rhythmic brightness variation.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/animation/pulse \
   -H "Content-Type: application/json" \
@@ -172,11 +193,13 @@ curl -X POST http://localhost:3000/api/animation/pulse \
 ---
 
 ### Rainbow Animation
+
 **POST** `/animation/rainbow`
 
 Full spectrum color cycling.
 
 **Request Body:**
+
 ```json
 {
     "duration": 5000,    // Optional, milliseconds, default: 5000
@@ -185,6 +208,7 @@ Full spectrum color cycling.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/animation/rainbow \
   -H "Content-Type: application/json" \
@@ -194,11 +218,13 @@ curl -X POST http://localhost:3000/api/animation/rainbow \
 ---
 
 ### Strobe Effect
+
 **POST** `/animation/strobe`
 
 Rapid on/off flashing.
 
 **Request Body:**
+
 ```json
 {
     "color": "white",      // Optional, flash color, default: "white"
@@ -208,6 +234,7 @@ Rapid on/off flashing.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/animation/strobe \
   -H "Content-Type: application/json" \
@@ -217,11 +244,13 @@ curl -X POST http://localhost:3000/api/animation/strobe \
 ---
 
 ### Color Cycle
+
 **POST** `/animation/cycle`
 
 Sequential cycling through multiple colors.
 
 **Request Body:**
+
 ```json
 {
     "colors": ["red", "green", "blue"],  // Optional, color array, default: all colors
@@ -230,6 +259,7 @@ Sequential cycling through multiple colors.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/animation/cycle \
   -H "Content-Type: application/json" \
@@ -239,16 +269,19 @@ curl -X POST http://localhost:3000/api/animation/cycle \
 ---
 
 ### Stop Animation
+
 **POST** `/animation/stop`
 
 Stop any currently running animation.
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:3000/api/animation/stop
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -259,16 +292,19 @@ curl -X POST http://localhost:3000/api/animation/stop
 ## 📊 Information Endpoints
 
 ### Get Available Colors
+
 **GET** `/colors`
 
 Retrieve list of all supported colors.
 
 **Example:**
+
 ```bash
 curl http://localhost:3000/api/colors
 ```
 
 **Response:**
+
 ```json
 {
     "colors": [
@@ -282,16 +318,19 @@ curl http://localhost:3000/api/colors
 ---
 
 ### Get Current Status
+
 **GET** `/status`
 
 Get current light state and animation status.
 
 **Example:**
+
 ```bash
 curl http://localhost:3000/api/status
 ```
 
 **Response:**
+
 ```json
 {
     "isAnimating": false,
@@ -310,16 +349,19 @@ curl http://localhost:3000/api/status
 ---
 
 ### Health Check
+
 **GET** `/health`
 
 System health and uptime information.
 
 **Example:**
+
 ```bash
 curl http://localhost:3000/api/health
 ```
 
 **Response:**
+
 ```json
 {
     "success": true,
@@ -351,11 +393,13 @@ curl http://localhost:3000/api/health
 ## 🔧 Error Handling
 
 ### HTTP Status Codes
+
 - **200** - Success
 - **400** - Bad Request (invalid parameters)
 - **500** - Internal Server Error
 
 ### Error Response Format
+
 ```json
 {
     "success": false,
@@ -366,6 +410,7 @@ curl http://localhost:3000/api/health
 ### Common Error Messages
 
 **Invalid Color:**
+
 ```json
 {
     "success": false,
@@ -374,6 +419,7 @@ curl http://localhost:3000/api/health
 ```
 
 **Invalid Intensity:**
+
 ```json
 {
     "success": false,
@@ -382,6 +428,7 @@ curl http://localhost:3000/api/health
 ```
 
 **Invalid Duration:**
+
 ```json
 {
     "success": false,
@@ -392,6 +439,7 @@ curl http://localhost:3000/api/health
 ## 📱 JavaScript Examples
 
 ### Fetch API
+
 ```javascript
 // Turn on blue light
 const response = await fetch('/api/light/on', {
@@ -419,6 +467,7 @@ console.log('Current RGB:', status.currentState.red, status.currentState.green, 
 ```
 
 ### jQuery
+
 ```javascript
 // Color change with jQuery
 $.ajax({
@@ -445,6 +494,7 @@ $.ajax({
 ```
 
 ### Node.js/Axios
+
 ```javascript
 const axios = require('axios');
 
@@ -478,11 +528,13 @@ async function lightShow() {
 ## 🚀 Rate Limiting & Production
 
 ### Current Limitations
+
 - No authentication required
 - No rate limiting implemented
 - Designed for local/trusted network use
 
 ### Production Recommendations
+
 ```javascript
 // Add authentication middleware
 app.use('/api', authenticateToken);
@@ -502,7 +554,9 @@ app.use(cors({
 ```
 
 ### WebSocket Alternative
+
 For real-time applications, consider WebSocket integration:
+
 ```javascript
 // Future WebSocket support (planned)
 ws://localhost:3000/ws/dmx

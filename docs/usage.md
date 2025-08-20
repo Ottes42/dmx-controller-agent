@@ -6,47 +6,54 @@ Comprehensive guide for using the DMX Controller Agent.
 
 ### Getting Started
 
-1. **Start the server**
-   ```bash
-   npm start
-   ```
+#### Start the server
 
-2. **Open browser**
-   ```
-   http://localhost:3000
-   ```
+```bash
+npm start
+```
 
-3. **Basic controls**
-   - Use the **Ein/Aus** buttons for power control
-   - Adjust **Master Dimmer** slider for brightness
-   - Click **color buttons** for instant color changes
+#### Open browser
+
+  http://localhost:3000
+
+#### Basic controls
+
+- Use the **Ein/Aus** buttons for power control
+- Adjust **Master Dimmer** slider for brightness
+- Click **color buttons** for instant color changes
 
 ### Interface Sections
 
 #### 💡 Basic Controls
+
 - **Ein/Aus/Stop** - Power and animation control
 - **Master Dimmer** - Overall brightness (0-255)
 
 #### 🎨 Colors
+
 - **Color Grid** - Click any color for instant change
 - **Intensity Slider** - Brightness for color selection
 
 #### 🌈 Fade Animation
+
 - **Target Color** - Destination color
 - **Duration** - Animation time (0.5-10 seconds)
 - **Easing** - Movement curve (see [Effects Guide](effects.md))
 
 #### 💗 Pulse Animation
+
 - **Color** - Pulse color
 - **Min/Max** - Brightness range
 - **Duration** - One complete pulse cycle
 
 #### ✨ Special Animations
+
 - **Rainbow** - Full spectrum cycle
 - **Color Cycle** - Multi-color sequence
 - **Strobe** - Rapid on/off flashing
 
 #### 📊 Status Panel
+
 - **Animation** - Current animation state
 - **Master Dimmer** - Current brightness
 - **RGB Values** - Current color values
@@ -81,7 +88,7 @@ parLight.setMasterDimmer(128);
 parLight.turnOff();
 ```
 
-### Animations
+### Animations usage
 
 ```javascript
 // Fade to color
@@ -123,13 +130,8 @@ async function lightSequence() {
 ## 🔌 REST API Usage
 
 ### Authentication
-No authentication required for local use.
 
-### Content Type
-All POST requests require:
-```
-Content-Type: application/json
-```
+No authentication required for local use.
 
 ### Basic Light Control
 
@@ -153,7 +155,7 @@ curl -X POST http://localhost:3000/api/light/dimmer \
   -d '{"value": 128}'
 ```
 
-### Animations
+### Animations via curl
 
 ```bash
 # Fade animation
@@ -238,23 +240,27 @@ ParLightB262.COLORS = {
 
 ### Common Issues
 
-**Light doesn't respond**
+#### Light doesn't respond
+
 - Check DMX cable connection
 - Verify COM port in device manager
 - Ensure light is in 7-channel mode
 - Try different DMX address
 
-**Animations are jerky**
+#### Animations are jerky
+
 - Use slower durations (>1000ms)
 - Try different easing functions
 - Check USB connection quality
 
-**Web interface not loading**
+#### Web interface not loading
+
 - Check if port 3000 is available
 - Try different port: `PORT=8080 npm start`
 - Check firewall settings
 
-**Permission errors on Linux**
+#### Permission errors on Linux
+
 ```bash
 # Add user to dialout group
 sudo usermod -a -G dialout $USER
