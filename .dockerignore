@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+logs
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+.nyc_output
+Dockerfile*
+docker-compose*
+.dockerignore
+docs
+scripts/setup-dev.sh
+*.md
+.husky
