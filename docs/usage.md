@@ -277,42 +277,14 @@ The web interface is fully responsive:
 - **Touch optimized**: Large buttons and sliders
 - **Gesture support**: Swipe for color selection
 
-## 🔗 Integration Examples
+## 🔗 Integration
 
-### Home Assistant
+For detailed integration examples with various platforms, see the **[Integration Guide](integrations.md)**:
 
-```yaml
-# configuration.yaml
-rest_command:
-  dmx_light_on:
-    url: "http://192.168.1.100:3000/api/light/on"
-    method: POST
-    payload: '{"color": "{{ color }}", "intensity": {{ intensity }}}'
-    
-  dmx_rainbow:
-    url: "http://192.168.1.100:3000/api/animation/rainbow" 
-    method: POST
-    payload: '{"duration": {{ duration }}}'
-```
-
-### Node-RED
-
-```json
-[{"id":"dmx-node","type":"http request","url":"http://localhost:3000/api/light/color","method":"POST","payload":"{\"color\":\"blue\"}"}]
-```
-
-### Discord Bot
-
-```javascript
-// Discord.js example
-client.on('messageCreate', message => {
-    if (message.content.startsWith('!light')) {
-        const color = message.content.split(' ')[1];
-        fetch('http://localhost:3000/api/light/color', {
-            method: 'POST',
-            body: JSON.stringify({ color }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-    }
-});
-```
+- 🏠 **Home Assistant** - YAML configurations and dashboard cards
+- 🤖 **Discord/Telegram Bots** - Chat-based lighting control
+- 🔄 **n8n Workflows** - Automation and scheduling
+- 🎮 **Gaming/Streaming** - OBS, Twitch integration
+- 🎵 **Music Sync** - Spotify-based lighting
+- 🌐 **Web Frameworks** - React, Vue.js components
+- 📊 **Monitoring** - Prometheus metrics

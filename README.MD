@@ -28,6 +28,7 @@ open http://localhost:3000
 - 📖 **[Usage Guide](docs/usage.md)** - Detaillierte Anwendung
 - 🎪 **[Effects & Easing](docs/effects.md)** - Alle Lichteffekte erklärt
 - 🔌 **[API Reference](docs/api.md)** - REST API Dokumentation
+- 🔗 **[Integration Examples](docs/integrations.md)** - Home Assistant, Discord, n8n & mehr
 
 ## ⚙️ Hardware
 
