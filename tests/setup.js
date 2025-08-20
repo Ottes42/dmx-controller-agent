@@ -1,6 +1,9 @@
 // Test setup file for Jest
 // Global test configuration and setup
 
+// Set NODE_ENV to test to avoid dotenv conflicts
+process.env.NODE_ENV = 'test'
+
 // Suppress console logs during tests unless explicitly needed
 const originalConsole = console
 global.console = {

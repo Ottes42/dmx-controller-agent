@@ -2,7 +2,7 @@ const DMX = require('dmx')
 const ParLightB262 = require('../devices/ParLightB262')
 
 const dmx = new DMX()
-const universe = dmx.addUniverse('ottes', 'enttec-open-usb-dmx', 'COM5')
+const universe = dmx.addUniverse('ottes', 'enttec-open-usb-dmx', '/dev/ttyUSB0')
 const parLight = new ParLightB262(universe, 1)
 
 parLight.turnOn(255, ParLightB262.COLORS.GREEN)

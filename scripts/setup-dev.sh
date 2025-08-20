@@ -14,14 +14,19 @@ npm run prepare
 # Create .env file if it doesn't exist
 if [ ! -f .env ]; then
     echo "📝 Creating .env file..."
-    cat > .env << EOL
+    if [ -f .env.example ]; then
+        cp .env.example .env
+        echo "✅ Created .env file from .env.example template"
+    else
+        cat > .env << EOL
 # DMX Controller Environment Variables
 PORT=3000
 DMX_DEVICE=COM5
 DEBUG=dmx*
 NODE_ENV=development
 EOL
-    echo "✅ Created .env file with default values"
+        echo "✅ Created .env file with default values"
+    fi
 fi
 
 # Check if DMX device exists (Linux/Mac)

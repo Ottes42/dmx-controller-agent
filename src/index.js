@@ -4,6 +4,11 @@ const DMX = require('dmx')
 const ParLightB262 = require('../devices/ParLightB262')
 const createAPIRoutes = require('./api')
 
+// Load environment variables from .env file (skip during testing to avoid module conflicts)
+if (process.env.NODE_ENV !== 'test') {
+  require('dotenv').config()
+}
+
 const app = express()
 const port = process.env.PORT || 3000
 const dmxDevice = process.env.DMX_DEVICE || 'COM5'

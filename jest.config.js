@@ -11,5 +11,10 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
-  verbose: true
+  verbose: true,
+  testEnvironmentOptions: {
+    env: {
+      NODE_ENV: 'test'
+    }
+  }
 }
