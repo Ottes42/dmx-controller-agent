@@ -15,7 +15,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: ottes42/dmx-controller-agent
+  IMAGE_NAME: ottes/dmx-controller-agent
 
 jobs:
   docker:

@@ -10,7 +10,7 @@ Click **"New repository secret"** and add these two secrets:
 
 #### Secret #1: Docker Hub Username
 - **Name**: `DOCKERHUB_USERNAME`
-- **Secret**: `ottes42`
+- **Secret**: `ottes`
 
 #### Secret #2: Docker Hub Access Token  
 - **Name**: `DOCKERHUB_TOKEN`
@@ -33,15 +33,15 @@ git push origin v1.0.0
 
 This will:
 - ✅ Build multi-platform Docker image (amd64 + arm64)
-- ✅ Push to `ottes42/dmx-controller-agent:v1.0.0` 
-- ✅ Push to `ottes42/dmx-controller-agent:latest`
+- ✅ Push to `ottes/dmx-controller-agent:v1.0.0` 
+- ✅ Push to `ottes/dmx-controller-agent:latest`
 - ✅ Generate additional semantic tags (1.0, 1)
 
 ## 📋 Verify Setup
 
 1. **Check workflow**: Go to Actions tab to see build progress
-2. **Check Docker Hub**: Visit `https://hub.docker.com/r/ottes42/dmx-controller-agent`
-3. **Test locally**: `docker pull ottes42/dmx-controller-agent:v1.0.0`
+2. **Check Docker Hub**: Visit `https://hub.docker.com/r/ottes/dmx-controller-agent`
+3. **Test locally**: `docker pull ottes/dmx-controller-agent:v1.0.0`
 
 ---
 

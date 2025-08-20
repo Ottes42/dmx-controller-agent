@@ -31,7 +31,7 @@ Add these two secrets:
 
 #### DOCKERHUB_USERNAME
 - **Name**: `DOCKERHUB_USERNAME`
-- **Secret**: `ottes42` (your Docker Hub username)
+- **Secret**: `ottes` (your Docker Hub username)
 
 #### DOCKERHUB_TOKEN  
 - **Name**: `DOCKERHUB_TOKEN`
@@ -43,9 +43,9 @@ The workflow automatically creates these tags:
 
 | Trigger | Docker Tag | Example |
 |---------|------------|---------|
-| `main` branch push | `latest` | `ottes42/dmx-controller-agent:latest` |
-| Version tag push | `v1.0.0`, `1.0.0`, `1.0`, `1` | `ottes42/dmx-controller-agent:v1.0.0` |
-| Pull request | `pr-123` | `ottes42/dmx-controller-agent:pr-123` |
+| `main` branch push | `latest` | `ottes/dmx-controller-agent:latest` |
+| Version tag push | `v1.0.0`, `1.0.0`, `1.0`, `1` | `ottes/dmx-controller-agent:v1.0.0` |
+| Pull request | `pr-123` | `ottes/dmx-controller-agent:pr-123` |
 
 ## 🚀 Triggering Builds
 
@@ -61,12 +61,12 @@ The workflow automatically creates these tags:
 
 ### Pull Latest
 ```bash
-docker pull ottes42/dmx-controller-agent:latest
+docker pull ottes/dmx-controller-agent:latest
 ```
 
 ### Pull Specific Version
 ```bash
-docker pull ottes42/dmx-controller-agent:v1.0.0
+docker pull ottes/dmx-controller-agent:v1.0.0
 ```
 
 ### Run Container
@@ -76,7 +76,7 @@ docker run -d \
   --device=/dev/ttyUSB0:/dev/ttyUSB0 \
   -p 3000:3000 \
   -e DMX_DEVICE=/dev/ttyUSB0 \
-  ottes42/dmx-controller-agent:latest
+  ottes/dmx-controller-agent:latest
 ```
 
 ## 🔒 Security Best Practices
@@ -106,7 +106,7 @@ docker run -d \
   --cap-drop ALL \
   --cap-add CAP_DAC_OVERRIDE \
   -e NODE_ENV=production \
-  ottes42/dmx-controller-agent:v1.0.0
+  ottes/dmx-controller-agent:v1.0.0
 ```
 
 ## 🐛 Troubleshooting
@@ -114,12 +114,12 @@ docker run -d \
 ### Build Failures
 1. **Check secrets**: Verify `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` are set
 2. **Token permissions**: Ensure token has Read, Write, Delete permissions
-3. **Repository name**: Confirm Docker Hub repo exists as `ottes42/dmx-controller-agent`
+3. **Repository name**: Confirm Docker Hub repo exists as `ottes/dmx-controller-agent`
 
 ### Authentication Errors
 ```bash
 # Test credentials locally
-echo $DOCKERHUB_TOKEN | docker login --username ottes42 --password-stdin
+echo $DOCKERHUB_TOKEN | docker login --username ottes --password-stdin
 ```
 
 ### Multi-platform Build Issues
@@ -132,7 +132,7 @@ platforms: linux/amd64  # Remove ,linux/arm64
 ## 📊 Monitoring Builds
 
 - **GitHub Actions**: Monitor builds at `/actions`  
-- **Docker Hub**: View images at `https://hub.docker.com/r/ottes42/dmx-controller-agent`
+- **Docker Hub**: View images at `https://hub.docker.com/r/ottes/dmx-controller-agent`
 - **Build artifacts**: Check the Actions summary for build details
 
 ---
