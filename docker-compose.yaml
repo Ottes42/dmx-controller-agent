@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  dmx-controller:
+    build: .
+    container_name: dmx-controller
+    ports:
+      - "3000:3000"
+    devices:
+      # Map USB DMX device - adjust device path as needed
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    environment:
+      - PORT=3000
+      - DMX_DEVICE=/dev/ttyUSB0
+      - NODE_ENV=production
+      # Node.js optimization for Pi
+      - NODE_OPTIONS=--max-old-space-size=128
+      - UV_THREADPOOL_SIZE=4
+    volumes:
+      # Logs persistence
+      - ./logs:/app/logs
+      # Sync timezone with host
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    # Resource limits optimized for Raspberry Pi
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    # Shared memory for better performance
+    shm_size: 64m
+    # Health check to monitor service status
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
