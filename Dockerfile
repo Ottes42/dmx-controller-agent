@@ -4,27 +4,25 @@ FROM node:24-alpine
 WORKDIR /app
 
 # Create app user for security
-RUN groupadd -g 1001 dmx && \
-    useradd -r -u 1001 -g dmx dmx
+RUN addgroup -g 1001 -S dmx && \
+    adduser -u 1001 -S -G dmx dmx
 
 # Install system dependencies for USB access
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    udev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache \
+    eudev
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && \
+# Install dependencies (skip prepare scripts to avoid husky)
+RUN npm ci --omit=dev --ignore-scripts && \
     npm cache clean --force
 
 # Copy application code
 COPY src/ ./src/
 COPY devices/ ./devices/
 COPY public/ ./public/
-COPY test.js ./
+COPY scripts/ ./scripts/
 
 # Create necessary directories and set permissions
 RUN mkdir -p /app/logs && \

@@ -8,6 +8,8 @@ Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interf
   - [📑 Table of Contents](#-table-of-contents)
   - [✨ Features](#-features)
   - [🚀 Quick Start](#-quick-start)
+    - [Native Installation](#native-installation)
+    - [Docker (Empfohlen für Produktion)](#docker-empfohlen-für-produktion)
   - [📚 Dokumentation](#-dokumentation)
   - [⚙️ Hardware](#️-hardware)
   - [🖥️ Plattformen](#️-plattformen)
@@ -27,9 +29,11 @@ Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interf
 - 🎨 **6 Animationstypen** mit 25+ Easing-Funktionen
 - 📱 **Responsive Design** für Mobile/Desktop
 - ⚡ **Graceful Shutdown** mit automatischem Licht-Aus
+- 🐳 **Docker Support** für einfache Bereitstellung
 
 ## 🚀 Quick Start
 
+### Native Installation
 ```bash
 # Installation
 npm install
@@ -41,11 +45,21 @@ npm start
 open http://localhost:3000
 ```
 
+### Docker (Empfohlen für Produktion)
+```bash
+# Mit Docker Compose
+docker-compose up -d
+
+# Web-Interface öffnen
+open http://localhost:3000
+```
+
 ## 📚 Dokumentation
 
 - 📖 **[Usage Guide](docs/usage.md)** - Detaillierte Anwendung
 - 🎪 **[Effects & Easing](docs/effects.md)** - Alle Lichteffekte erklärt
 - 🔌 **[API Reference](docs/api.md)** - REST API Dokumentation
+- 🐳 **[Docker Guide](docs/docker.md)** - Container-Deployment & Docker Compose
 - 🔗 **[Integration Examples](docs/integrations.md)** - Home Assistant, Discord, n8n & mehr
 - 🛠️ **[Development Guide](docs/development.md)** - Entwicklungsrichtlinien & Standards
 
@@ -60,13 +74,15 @@ open http://localhost:3000
 |----------|--------|-------|
 | ✅ Windows | Ready | COM-Port supported |
 | 🚧 WSL2 | WIP | USB passthrough needed |
-| 🎯 Raspberry Pi | Planned | Target deployment |
+| 🎯 Raspberry Pi | Ready | Docker recommended |
+| 🐳 Docker | Ready | All platforms supported |
 
 ## 🔧 Environment
 
 ```bash
 PORT=3000           # Web server port
 DMX_DEVICE=COM5     # DMX interface device
+NODE_ENV=production # Environment mode
 ```
 
 ## 📋 Scripts
@@ -77,6 +93,11 @@ npm run dev     # Development with nodemon
 npm test        # Run test sequence
 npm run lint    # Check code style (Standard.js)
 npm run lint:fix # Auto-fix code style issues
+
+# Docker commands
+docker-compose up -d      # Start services
+docker-compose logs -f    # View logs
+docker-compose down       # Stop services
 ```
 
 ## 🎮 Quick API Examples
@@ -104,6 +125,7 @@ Designed for use with:
 - **Discord/Telegram** bots
 - **Home automation** systems
 - **Live performance** setups
+- **Docker** environments
 
 See [Integration Examples](docs/integrations.md) for detailed implementation guides.
 
@@ -120,6 +142,7 @@ dmx/
 │   ├── usage.md          # Anwendungshandbuch
 │   ├── api.md            # API Referenz
 │   ├── effects.md        # Effekte & Easing
+│   ├── docker.md         # Docker Deployment Guide
 │   ├── integrations.md   # Integration-Beispiele
 │   └── development.md    # Entwicklungsrichtlinien
 ├── public/               # 🌐 Web Interface
@@ -129,6 +152,8 @@ dmx/
 ├── scripts/              # 🛠️ Setup & Utility Scripts
 │   └── setup-dev.sh     # Entwicklungsumgebung Setup
 ├── .husky/              # 🪝 Git Hooks (Standard.js)
+├── Dockerfile           # 🐳 Container Image Definition
+├── docker-compose.yml   # 🐙 Multi-Container Setup
 ├── test.js              # 🧪 Test-Sequenzen
 ├── package.json         # 📦 Dependencies & Scripts
 └── README.md           # 📖 Diese Datei
