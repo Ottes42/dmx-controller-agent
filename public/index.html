@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMX Par Light Controller</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎭 DMX Par Light Controller</h1>
+            <div class="status" id="status">
+                <span class="status-indicator" id="statusIndicator">●</span>
+                <span id="statusText">Bereit</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- Basic Controls -->
+            <div class="card">
+                <h2>💡 Grundsteuerung</h2>
+                <div class="controls">
+                    <button class="btn btn-success" onclick="turnOn()">Ein</button>
+                    <button class="btn btn-danger" onclick="turnOff()">Aus</button>
+                    <button class="btn btn-warning" onclick="stopAnimation()">Stop</button>
+                </div>
+                
+                <div class="control-group">
+                    <label for="dimmerSlider">Master Dimmer: <span id="dimmerValue">128</span></label>
+                    <input type="range" id="dimmerSlider" min="0" max="255" value="128" 
+                           oninput="updateDimmer(this.value)">
+                </div>
+            </div>
+
+            <!-- Colors -->
+            <div class="card">
+                <h2>🎨 Farben</h2>
+                <div class="color-grid" id="colorGrid">
+                    <!-- Colors will be loaded dynamically -->
+                </div>
+                <div class="control-group">
+                    <label for="intensitySlider">Intensität: <span id="intensityValue">255</span></label>
+                    <input type="range" id="intensitySlider" min="0" max="255" value="255" 
+                           oninput="updateIntensity(this.value)">
+                </div>
+            </div>
+
+            <!-- Fade Animation -->
+            <div class="card">
+                <h2>🌈 Fade Animation</h2>
+                <div class="controls">
+                    <select id="fadeColor">
+                        <!-- Options will be loaded dynamically -->
+                    </select>
+                    <input type="range" id="fadeDuration" min="500" max="10000" value="2000">
+                    <span id="fadeDurationValue">2.0s</span>
+                </div>
+                <div class="controls">
+                    <select id="fadeEasing">
+                        <option value="linear">Linear</option>
+                        <option value="inQuad">In Quad</option>
+                        <option value="outQuad">Out Quad</option>
+                        <option value="inOutQuad">InOut Quad</option>
+                        <option value="inOutSine">InOut Sine</option>
+                        <option value="outBounce">Out Bounce</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="startFade()">Fade</button>
+                </div>
+            </div>
+
+            <!-- Pulse Animation -->
+            <div class="card">
+                <h2>💗 Pulse Animation</h2>
+                <div class="controls">
+                    <select id="pulseColor">
+                        <!-- Options will be loaded dynamically -->
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="pulseMin">Min: <span id="pulseMinValue">50</span></label>
+                    <input type="range" id="pulseMin" min="0" max="255" value="50" 
+                           oninput="updatePulseMin(this.value)">
+                </div>
+                <div class="control-group">
+                    <label for="pulseMax">Max: <span id="pulseMaxValue">255</span></label>
+                    <input type="range" id="pulseMax" min="0" max="255" value="255" 
+                           oninput="updatePulseMax(this.value)">
+                </div>
+                <div class="control-group">
+                    <label for="pulseDuration">Dauer: <span id="pulseDurationValue">2.0s</span></label>
+                    <input type="range" id="pulseDuration" min="500" max="5000" value="2000" 
+                           oninput="updatePulseDuration(this.value)">
+                </div>
+                <button class="btn btn-primary" onclick="startPulse()">Start Pulse</button>
+            </div>
+
+            <!-- Special Animations -->
+            <div class="card">
+                <h2>✨ Spezial-Animationen</h2>
+                <div class="controls">
+                    <button class="btn btn-rainbow" onclick="startRainbow()">🌈 Rainbow</button>
+                    <button class="btn btn-secondary" onclick="startColorCycle()">🔄 Color Cycle</button>
+                </div>
+                <div class="control-group">
+                    <label for="strobeSpeed">Strobe Geschwindigkeit: <span id="strobeSpeedValue">100ms</span></label>
+                    <input type="range" id="strobeSpeed" min="50" max="500" value="100" 
+                           oninput="updateStrobeSpeed(this.value)">
+                    <button class="btn btn-strobe" onclick="startStrobe()">⚡ Strobe</button>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="card">
+                <h2>📊 Status</h2>
+                <div class="status-details">
+                    <div class="status-row">
+                        <span>Animation:</span>
+                        <span id="animationStatus">Keine</span>
+                    </div>
+                    <div class="status-row">
+                        <span>Master Dimmer:</span>
+                        <span id="currentDimmer">0</span>
+                    </div>
+                    <div class="status-row">
+                        <span>RGB:</span>
+                        <span id="currentRGB">0, 0, 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

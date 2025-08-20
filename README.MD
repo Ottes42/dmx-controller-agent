@@ -1,111 +1,104 @@
-# DMX Controller Agent
+# 🎭 DMX Controller Agent
 
-Ein Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Animationsunterstützung.
+Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interface und REST API.
 
-## Features
+## ✨ Features
 
-- **DMX-Steuerung** für Par Light B262 RGB-Scheinwerfer
-- **Animationen**: Fade, Color Cycle, Pulse, Strobe, Rainbow
-- **Easing-Funktionen** für natürliche Übergänge
-- **Callback-Support** für Animation-Sequenzen
-- **Modulares Design** mit wiederverwendbarer ParLightB262-Klasse
+- 🌐 **Web-Interface** für intuitive manuelle Steuerung
+- 🔌 **REST API** für programmatische Integration  
+- 🎨 **6 Animationstypen** mit 25+ Easing-Funktionen
+- 📱 **Responsive Design** für Mobile/Desktop
+- ⚡ **Graceful Shutdown** mit automatischem Licht-Aus
 
-## Hardware-Anforderungen
+## 🚀 Quick Start
+
+```bash
+# Installation
+npm install
+
+# Server starten
+npm start
+
+# Web-Interface öffnen
+open http://localhost:3000
+```
+
+## 📚 Dokumentation
+
+- 📖 **[Usage Guide](docs/usage.md)** - Detaillierte Anwendung
+- 🎪 **[Effects & Easing](docs/effects.md)** - Alle Lichteffekte erklärt
+- 🔌 **[API Reference](docs/api.md)** - REST API Dokumentation
+
+## ⚙️ Hardware
 
 - **DMX Interface**: Enttec Open DMX USB
-- **Scheinwerfer**: Par Light B262 oder kompatible RGB-DMX-Geräte
+- **Scheinwerfer**: Par Light B262 (7-Kanal Modus)
 
-## Plattform-Unterstützung
+## 🖥️ Plattformen
 
-| Plattform | Status | Notizen |
-|-----------|---------|---------|
-| ✅ Windows | Funktional | COM-Port direkt unterstützt |
-| 🚧 WSL2 | In Arbeit | USB-Durchleitung erforderlich |
-| 🚧 Docker | Geplant | Device-Mapping für USB-Geräte |
-| 🎯 Raspberry Pi | Geplant | Ziel-Deployment-Plattform |
+| Platform | Status | Notes |
+|----------|--------|-------|
+| ✅ Windows | Ready | COM-Port supported |
+| 🚧 WSL2 | WIP | USB passthrough needed |
+| 🎯 Raspberry Pi | Planned | Target deployment |
 
-## Installation
-
-```bash
-npm install
-```
-
-## Verwendung
-
-### Grundlegende Steuerung
-```javascript
-const ParLightB262 = require('./ParLightB262');
-const parLight = new ParLightB262(universe, 1);
-
-// Licht einschalten
-parLight.turnOn(255, ParLightB262.COLORS.WHITE);
-
-// Farbe setzen
-parLight.setColor(ParLightB262.COLORS.RED);
-
-// Animation
-parLight.fadeToColor(ParLightB262.COLORS.BLUE, 2000, 'linear');
-```
-
-### Verfügbare Animationen
-- `fadeToColor()` - Sanfter Farbübergang
-- `startColorCycle()` - Farbzyklus
-- `startPulse()` - Pulsierender Effekt  
-- `startStrobe()` - Stroboskop-Effekt
-- `startRainbow()` - Regenbogen-Animation
-- `fadeDimmer()` - Dimmer-Übergang
-
-## Scripts
+## 🔧 Environment
 
 ```bash
-# Demo starten
-npm run start
-
-# Entwicklung
-npm run dev
+PORT=3000           # Web server port
+DMX_DEVICE=COM5     # DMX interface device
 ```
 
-## Integration
+## 📋 Scripts
 
-Dieser DMX-Agent wird von folgenden Systemen verwendet:
-
-- **n8n**: Workflow-Automation für Lichtsteuerung
-- **Chat Bridge**: Discord/Telegram Bot-Integration
-- **REST API**: HTTP-Endpunkte für externe Steuerung
-
-## Geplante Features
-
-- [ ] WSL2-Unterstützung mit USB-Passthrough
-- [ ] Docker-Container für einfache Bereitstellung
-- [ ] REST API für externe Steuerung
-- [ ] Web-Interface für manuelle Bedienung
-- [ ] Raspberry Pi Deployment-Scripts
-- [ ] Mehrere Scheinwerfer-Unterstützung
-- [ ] Szenen-Management
-- [ ] MQTT-Integration
-
-## Entwicklung
-
-### Projekt-Struktur
-```
-/dmx/
-├── ParLightB262.js    # Scheinwerfer-Klasse
-├── index.js           # Demo/Test-Script
-├── package.json       # Dependencies
-└── README.MD          # Diese Datei
+```bash
+npm start    # Production server
+npm run dev  # Development with nodemon  
+npm test     # Run test sequence
 ```
 
-### DMX-Kanäle (Par Light B262)
-| Kanal | Funktion |
-|-------|----------|
-| 1 | Master Dimmer |
-| 2 | Rot |
-| 3 | Grün |
-| 4 | Blau |
-| 5 | Strobe |
-| 6 | Modus |
-| 7 | Geschwindigkeit |
+## 🎮 Quick API Examples
 
-## Lizenz
+```bash
+# Turn on light
+curl -X POST http://localhost:3000/api/light/on \
+  -d '{"color":"blue","intensity":200}'
 
-ISC
+# Start rainbow animation
+curl -X POST http://localhost:3000/api/animation/rainbow \
+  -d '{"duration":5000}'
+```
+
+## 🏗️ Integration
+
+Designed for use with:
+- **n8n** workflows
+- **Discord/Telegram** bots
+- **Home automation** systems
+- **Live performance** setups
+
+## 📁 Project Structure
+
+```
+dmx/
+├── docs/              # Documentation
+├── public/            # Web interface
+├── ParLightB262.js    # Device driver
+├── api.js            # REST routes
+└── index.js          # Main server
+```
+
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create feature branch
+3. Add tests for new effects
+4. Submit PR
+
+## 📄 License
+
+ISC - Feel free to use in your projects!
+
+---
+
+*Built with ❤️ for the lighting community*

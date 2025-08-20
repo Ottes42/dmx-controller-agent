@@ -84,7 +84,7 @@ class ParLightB262 {
     // Grundlegende Steuerung
     setMasterDimmer(value) {
         this.currentState.masterDimmer = this._clamp(value);
-        this._updateChannel('masterDimmer');
+        this._updateChannels('masterDimmer');
         return this;
     }
 
@@ -102,7 +102,7 @@ class ParLightB262 {
         } else {
             this.currentState.strobe = this._clamp(speed, 8, 255);
         }
-        this._updateChannel('strobe');
+        this._updateChannels('strobe');
         return this;
     }
 
@@ -142,7 +142,7 @@ class ParLightB262 {
     // Modi mit Konstanten
     setManualMode() {
         this.currentState.mode = ParLightB262.MODES.MANUAL;
-        this._updateChannel('mode');
+        this._updateChannels('mode');
         return this;
     }
 
@@ -461,19 +461,26 @@ class ParLightB262 {
         return this.startAnimation(this.createDimmerFade(targetIntensity, duration, easing), onFinish);
     }
 
+    isConnected() {
+        try {
+            const dim = parseInt(this.universe.get(this.channels.masterDimmer), 10);
+            return dim >= 0 && dim <= 255;
+        } catch (error) {
+            return false;
+        }
+    }
+
     // Private helper methods
     _clamp(value, min = 0, max = 255) {
         return Math.max(min, Math.min(max, value));
     }
 
-    _updateChannel(channel) {
-        const value = this.currentState[channel];
-        const update = {};
-        update[this.channels[channel]] = value;
-        this.universe.update(update);
-    }
-
+    /**
+     * Updates the specified DMX channel(s).
+     * @param {Array|String} channels - The channels to update.
+     */
     _updateChannels(channels) {
+        if (!Array.isArray(channels)) channels = [channels];
         const update = {};
         channels.forEach(channel => {
             const value = this.currentState[channel];
