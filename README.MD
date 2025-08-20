@@ -59,7 +59,8 @@ open http://localhost:3000
 - 🎪 **[Effects & Easing](docs/effects.md)** - Alle Lichteffekte erklärt
 - 🔌 **[API Reference](docs/api.md)** - REST API Dokumentation
 - 🐳 **[Docker Guide](docs/docker.md)** - Container-Deployment & Docker Compose
-- 🔗 **[Integration Examples](docs/integrations.md)** - Home Assistant, Discord, n8n & mehr
+- � **[WSL Setup Guide](docs/wsl.md)** - Windows Subsystem for Linux mit USB-Passthrough
+- �🔗 **[Integration Examples](docs/integrations.md)** - Home Assistant, Discord, n8n & mehr
 - 🛠️ **[Development Guide](docs/development.md)** - Entwicklungsrichtlinien & Standards
 
 ## ⚙️ Hardware
@@ -72,6 +73,7 @@ open http://localhost:3000
 | Platform | Status | Notes |
 |----------|--------|-------|
 | ✅ Windows | Ready | COM-Port supported |
+| 🐧 WSL2 | Ready | USB passthrough via usbipd-win |
 | 🎯 Raspberry Pi | Ready | Docker recommended |
 | 🐳 Docker | Ready | All platforms supported |
 
