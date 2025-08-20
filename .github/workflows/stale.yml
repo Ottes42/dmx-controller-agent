@@ -1,0 +1,89 @@
+name: Stale Issues & PRs
+
+on:
+  schedule:
+    # Runs daily at 1 AM UTC
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  stale:
+    name: Mark Stale Issues & PRs
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    
+    steps:
+    - name: Mark stale issues and pull requests
+      uses: actions/stale@v9
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        
+        # Stale issue configuration
+        stale-issue-message: |
+          This issue has been automatically marked as stale because it has not had recent activity. 
+          
+          It will be closed if no further activity occurs within 7 days. If this issue is still relevant, please:
+          - Add a comment to keep it open
+          - Add the `keep-open` label
+          - Remove the `stale` label
+          
+          Thank you for your contributions! 🙏
+        
+        close-issue-message: |
+          This issue was automatically closed because it has been stale for 7 days with no activity.
+          
+          If you believe this issue should remain open, please:
+          1. Reopen the issue
+          2. Add the `keep-open` label
+          3. Provide additional context or updates
+          
+          Thank you! 🚀
+
+        # Stale PR configuration  
+        stale-pr-message: |
+          This pull request has been automatically marked as stale because it has not had recent activity.
+          
+          It will be closed if no further activity occurs within 14 days. If this PR is still relevant, please:
+          - Add a comment to keep it open
+          - Rebase/update the branch if needed
+          - Add the `keep-open` label
+          - Remove the `stale` label
+          
+          Thank you for your contribution! 🙏
+
+        close-pr-message: |
+          This pull request was automatically closed because it has been stale for 14 days with no activity.
+          
+          If you'd like to continue working on this, please:
+          1. Reopen the PR
+          2. Rebase against the latest main branch
+          3. Add the `keep-open` label
+          4. Provide an update on the status
+          
+          Thank you! 🚀
+
+        # Timing configuration
+        days-before-stale: 30
+        days-before-close: 7
+        days-before-pr-close: 14
+        
+        # Labels
+        stale-issue-label: 'stale'
+        stale-pr-label: 'stale'
+        exempt-issue-labels: 'keep-open,security,critical,enhancement'
+        exempt-pr-labels: 'keep-open,security,critical,work-in-progress'
+        exempt-draft-pr: true
+        
+        # Limits
+        operations-per-run: 100
+        
+        # Additional settings
+        ascending: true
+        skip-stale-issue-message: false
+        skip-stale-pr-message: false
+        remove-stale-when-updated: true
+        
+        # Only process issues/PRs without recent activity
+        only-labels: ''

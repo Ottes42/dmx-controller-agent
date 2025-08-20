@@ -1,0 +1,117 @@
+name: Docker Build & Test
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  docker-build:
+    name: Build & Test Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Log into registry ${{ env.REGISTRY }}
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=sha,prefix={{branch}}-
+        labels: |
+          org.opencontainers.image.title=DMX Controller Agent
+          org.opencontainers.image.description=DMX Controller Agent for Par Light B262 with Web Interface and REST API
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: false
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        outputs: type=docker,dest=/tmp/dmx-controller.tar
+
+    - name: Load and test Docker image
+      run: |
+        docker load --input /tmp/dmx-controller.tar
+        
+        # Get the first tag from the metadata
+        IMAGE_TAG=$(echo '${{ steps.meta.outputs.tags }}' | head -n1)
+        echo "Testing image: $IMAGE_TAG"
+        
+        # Test container starts and health check passes
+        echo "🐳 Starting container for testing..."
+        CONTAINER_ID=$(docker run -d -p 3000:3000 --name dmx-test "$IMAGE_TAG")
+        
+        # Wait for container to be ready
+        echo "⏳ Waiting for container to be ready..."
+        sleep 10
+        
+        # Test health endpoint
+        echo "🏥 Testing health endpoint..."
+        if docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/health; then
+          echo "✅ Health check passed"
+        else
+          echo "❌ Health check failed"
+          docker logs "$CONTAINER_ID"
+          exit 1
+        fi
+        
+        # Test basic API endpoints
+        echo "🧪 Testing API endpoints..."
+        docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/colors
+        docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/status
+        
+        # Cleanup
+        docker stop "$CONTAINER_ID"
+        docker rm "$CONTAINER_ID"
+        echo "✅ Docker tests completed successfully"
+
+    - name: Push Docker image
+      if: github.event_name != 'pull_request'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Upload Docker image artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-image
+        path: /tmp/dmx-controller.tar
+        retention-days: 7

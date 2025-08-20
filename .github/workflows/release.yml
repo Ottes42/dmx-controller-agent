@@ -1,0 +1,202 @@
+name: Release & Deployment
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.2.3)'
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get version
+      id: get_version
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --prefer-offline
+
+    - name: Run tests
+      run: npm test
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Get commits since last tag
+        LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        if [ -n "$LAST_TAG" ]; then
+          CHANGELOG=$(git log $LAST_TAG..HEAD --pretty=format:"* %s (%an)" --no-merges)
+        else
+          CHANGELOG=$(git log --pretty=format:"* %s (%an)" --no-merges -10)
+        fi
+        
+        # Create changelog file
+        cat > CHANGELOG.md << EOF
+        # Changelog for v${{ steps.get_version.outputs.version }}
+        
+        ## Changes
+        $CHANGELOG
+        
+        ## Full Changelog
+        See: https://github.com/${{ github.repository }}/compare/$LAST_TAG...v${{ steps.get_version.outputs.version }}
+        EOF
+        
+        # Set output for release notes
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        cat CHANGELOG.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.get_version.outputs.version }}
+        release_name: DMX Controller Agent v${{ steps.get_version.outputs.version }}
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+
+  build-artifacts:
+    name: Build Release Artifacts
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --omit=dev --prefer-offline
+
+    - name: Create release package
+      run: |
+        mkdir -p release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}
+        
+        # Copy application files
+        cp -r src devices public scripts release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/
+        cp package*.json release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/
+        cp README.MD release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/
+        cp Dockerfile release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/
+        
+        # Copy essential docs
+        mkdir -p release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/docs
+        cp docs/*.md release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/docs/
+        
+        # Create installation script
+        cat > release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/install.sh << 'EOF'
+        #!/bin/bash
+        echo "🚀 Installing DMX Controller Agent..."
+        npm install --omit=dev
+        echo "✅ Installation complete!"
+        echo ""
+        echo "Quick start:"
+        echo "  npm start                    # Start production server"
+        echo "  npm run dev                  # Start development server"
+        echo "  http://localhost:3000        # Web interface"
+        echo ""
+        echo "Documentation: ./docs/"
+        EOF
+        chmod +x release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}/install.sh
+        
+        # Create archive
+        cd release
+        tar -czf dmx-controller-agent-v${{ needs.create-release.outputs.version }}.tar.gz dmx-controller-agent-v${{ needs.create-release.outputs.version }}
+        zip -r dmx-controller-agent-v${{ needs.create-release.outputs.version }}.zip dmx-controller-agent-v${{ needs.create-release.outputs.version }}
+
+    - name: Upload Release Archive (tar.gz)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ./release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}.tar.gz
+        asset_name: dmx-controller-agent-v${{ needs.create-release.outputs.version }}.tar.gz
+        asset_content_type: application/gzip
+
+    - name: Upload Release Archive (zip)
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ./release/dmx-controller-agent-v${{ needs.create-release.outputs.version }}.zip
+        asset_name: dmx-controller-agent-v${{ needs.create-release.outputs.version }}.zip
+        asset_content_type: application/zip
+
+  docker-release:
+    name: Release Docker Images
+    runs-on: ubuntu-latest
+    needs: create-release
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository }}:latest
+          ghcr.io/${{ github.repository }}:v${{ needs.create-release.outputs.version }}
+        labels: |
+          org.opencontainers.image.title=DMX Controller Agent
+          org.opencontainers.image.description=DMX Controller Agent for Par Light B262 with Web Interface and REST API
+          org.opencontainers.image.version=v${{ needs.create-release.outputs.version }}
+          org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          org.opencontainers.image.revision=${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

@@ -1,38 +1,61 @@
+# Auto-labeling configuration for pull requests
 # https://github.com/actions/labeler#match-object
-docs:
-- changed-files:
-  - any-glob-to-any-file: '**/*.md'
 
+# Documentation changes
+documentation:
+- changed-files:
+  - any-glob-to-any-file: ['**/*.md', 'docs/**']
+
+# Device and hardware changes
 device:
 - changed-files:
   - any-glob-to-any-file: 'devices/**'
 
+# Frontend/UI changes
 frontend:
 - changed-files:
-  - any-glob-to-any-file: 'public/**'
+  - any-glob-to-any-file: ['public/**', 'src/views/**']
 
-script:
+# Backend/API changes
+backend:
+- changed-files:
+  - any-glob-to-any-file: ['src/**', '!public/**']
+
+# Testing changes
+testing:
+- changed-files:
+  - any-glob-to-any-file: ['tests/**', '**/*.test.js', '**/*.spec.js', 'jest.config.js']
+
+# CI/CD changes
+ci-cd:
+- changed-files:
+  - any-glob-to-any-file: ['.github/**', 'Dockerfile', '.dockerignore']
+
+# Configuration changes
+config:
+- changed-files:
+  - any-glob-to-any-file: ['package*.json', '.env*', '*.config.js', '.husky/**']
+
+# Script changes
+scripts:
 - changed-files:
   - any-glob-to-any-file: 'scripts/**'
 
-server:
+# Security-related changes
+security:
 - changed-files:
-  - any-glob-to-any-file: 'src/index.js'
+  - any-glob-to-any-file: ['.github/workflows/security.yml', 'package-lock.json']
 
-api:
-- changed-files:
-  - any-glob-to-any-file: 'src/api.js'
-
+# Branch-based labels
 feature:
-- head-branch: ['^feature', 'feature']
-   
-bug:
-- head-branch: ['^bug', 'bug']
-   
-base:
-- changed-files:
-  - any-glob-to-any-file: ['package.json', 'Dockerfile']
+- head-branch: ['^feature', 'feat']
 
-# Add 'release' label to any PR that is opened against the `master` branch
-# release:
-#  - base-branch: 'master'
+bugfix:
+- head-branch: ['^fix', '^bug', 'bugfix']
+
+hotfix:
+- head-branch: ['^hotfix']
+
+# Release-related
+release:
+- head-branch: ['^release', '^rel']

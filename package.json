@@ -12,6 +12,8 @@
     "test:hardware": "node scripts/test.js",
     "lint": "standard",
     "lint:fix": "standard --fix",
+    "audit:security": "npm audit --audit-level=moderate",
+    "audit:deps": "npx audit-ci --moderate",
     "prepare": "husky install"
   },
   "keywords": [

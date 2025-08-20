@@ -1,0 +1,173 @@
+name: Performance & Monitoring
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    # Run performance tests weekly
+    - cron: '0 3 * * 1'
+
+jobs:
+  performance-test:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --prefer-offline
+
+    - name: Start server for testing
+      run: |
+        npm start &
+        SERVER_PID=$!
+        echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+        
+        # Wait for server to be ready
+        for i in {1..30}; do
+          if curl -f http://localhost:3000/api/health >/dev/null 2>&1; then
+            echo "Server is ready"
+            break
+          fi
+          echo "Waiting for server... ($i/30)"
+          sleep 2
+        done
+
+    - name: Install performance testing tools
+      run: |
+        npm install -g autocannon
+        npm install -g clinic
+
+    - name: Run basic performance tests
+      run: |
+        echo "🚀 Running performance tests..."
+        
+        # Test API endpoints
+        echo "Testing health endpoint..."
+        autocannon -c 10 -d 30 -j http://localhost:3000/api/health > perf-health.json
+        
+        echo "Testing status endpoint..."
+        autocannon -c 10 -d 30 -j http://localhost:3000/api/status > perf-status.json
+        
+        echo "Testing colors endpoint..."
+        autocannon -c 10 -d 30 -j http://localhost:3000/api/colors > perf-colors.json
+        
+        # Test basic light control
+        echo "Testing light control..."
+        autocannon -c 5 -d 20 -j -m POST -H "Content-Type: application/json" -b '{"intensity":128,"color":"blue"}' http://localhost:3000/api/light/on > perf-light-on.json
+
+    - name: Generate performance report
+      run: |
+        echo "# Performance Test Report" > performance-report.md
+        echo "Generated on: $(date)" >> performance-report.md
+        echo "" >> performance-report.md
+        
+        # Function to extract key metrics
+        extract_metrics() {
+          local file=$1
+          local endpoint=$2
+          echo "## $endpoint" >> performance-report.md
+          echo "" >> performance-report.md
+          
+          if [ -f "$file" ]; then
+            local avg_latency=$(jq -r '.latency.average // "N/A"' "$file")
+            local req_per_sec=$(jq -r '.requests.average // "N/A"' "$file")
+            local throughput=$(jq -r '.throughput.average // "N/A"' "$file")
+            
+            echo "- **Average Latency**: ${avg_latency}ms" >> performance-report.md
+            echo "- **Requests/sec**: $req_per_sec" >> performance-report.md
+            echo "- **Throughput**: ${throughput} bytes/sec" >> performance-report.md
+            echo "" >> performance-report.md
+          else
+            echo "- **Status**: Test failed or file not found" >> performance-report.md
+            echo "" >> performance-report.md
+          fi
+        }
+        
+        extract_metrics "perf-health.json" "Health Endpoint"
+        extract_metrics "perf-status.json" "Status Endpoint" 
+        extract_metrics "perf-colors.json" "Colors Endpoint"
+        extract_metrics "perf-light-on.json" "Light Control Endpoint"
+
+    - name: Check performance thresholds
+      run: |
+        echo "🔍 Checking performance thresholds..."
+        
+        # Check if any endpoint has average latency > 100ms
+        for file in perf-*.json; do
+          if [ -f "$file" ]; then
+            avg_latency=$(jq -r '.latency.average // 0' "$file")
+            if (( $(echo "$avg_latency > 100" | bc -l 2>/dev/null || echo 0) )); then
+              echo "⚠️  Warning: High latency detected in $file: ${avg_latency}ms"
+            fi
+          fi
+        done
+
+    - name: Stop server
+      run: |
+        if [ -n "$SERVER_PID" ]; then
+          kill $SERVER_PID 2>/dev/null || true
+        fi
+
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-reports
+        path: |
+          performance-report.md
+          perf-*.json
+        retention-days: 30
+
+  memory-profile:
+    name: Memory & CPU Profiling
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci --prefer-offline
+
+    - name: Install profiling tools
+      run: |
+        npm install -g clinic
+        npm install -g 0x
+
+    - name: Run memory profile
+      timeout-minutes: 5
+      run: |
+        echo "🧠 Running memory profiling..."
+        timeout 60s clinic doctor --on-port 'autocannon -c 5 -d 20 http://localhost:3000/api/health' -- npm start || true
+        
+        # Check if profile was generated
+        if [ -d ".clinic" ]; then
+          echo "Memory profile generated successfully"
+          ls -la .clinic/
+        fi
+
+    - name: Upload profiling results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: profiling-reports
+        path: |
+          .clinic/
+        retention-days: 7
