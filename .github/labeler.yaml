@@ -1,0 +1,38 @@
+# https://github.com/actions/labeler#match-object
+docs:
+- changed-files:
+  - any-glob-to-any-file: '**/*.md'
+
+device:
+- changed-files:
+  - any-glob-to-any-file: 'devices/**'
+
+frontend:
+- changed-files:
+  - any-glob-to-any-file: 'public/**'
+
+script:
+- changed-files:
+  - any-glob-to-any-file: 'scripts/**'
+
+server:
+- changed-files:
+  - any-glob-to-any-file: 'src/index.js'
+
+api:
+- changed-files:
+  - any-glob-to-any-file: 'src/api.js'
+
+feature:
+- head-branch: ['^feature', 'feature']
+   
+bug:
+- head-branch: ['^bug', 'bug']
+   
+base:
+- changed-files:
+  - any-glob-to-any-file: ['package.json', 'Dockerfile']
+
+# Add 'release' label to any PR that is opened against the `master` branch
+# release:
+#  - base-branch: 'master'
