@@ -17,10 +17,8 @@ Node.js-based DMX controller for Par Light B262 fixtures with web interface and 
   - [📋 Scripts](#-scripts)
   - [🎮 Quick API Examples](#-quick-api-examples)
   - [🏗️ Integration](#️-integration)
-  - [📁 Project Structure](#-project-structure)
   - [🤝 Contributing](#-contributing)
   - [📄 License](#-license)
-- [Built with ❤️ for the lighting community](#built-with-️-for-the-lighting-community)
 
 ## ✨ Features
 
@@ -124,37 +122,6 @@ Designed for use with:
 
 See [Integration Examples](docs/integrations.md) for detailed implementation guides.
 
-## 📁 Project Structure
-
-```
-dmx/
-├── src/                    # 🎯 Hauptquellcode
-│   ├── index.js           # Express Server & Startup
-│   └── api.js             # REST API Routes
-├── devices/               # 🔌 DMX Geräte-Abstraktionen  
-│   └── ParLightB262.js    # Par Light B262 Geräteklasse
-├── docs/                  # 📚 Dokumentation
-│   ├── usage.md          # Anwendungshandbuch
-│   ├── api.md            # API Referenz
-│   ├── effects.md        # Effekte & Easing
-│   ├── docker.md         # Docker Deployment Guide
-│   ├── docker-hub-setup.md # Docker Hub CI/CD Setup
-│   ├── integrations.md   # Integration-Beispiele
-│   └── development.md    # Entwicklungsrichtlinien
-├── public/               # 🌐 Web Interface
-│   ├── index.html       # Frontend HTML
-│   ├── style.css        # Styling
-│   └── script.js        # Frontend JavaScript
-├── scripts/              # 🛠️ Setup & Utility Scripts
-│   └── setup-dev.sh     # Entwicklungsumgebung Setup
-├── .husky/              # 🪝 Git Hooks (Standard.js)
-├── Dockerfile           # 🐳 Container Image Definition
-├── docker-compose.yml   # 🐙 Multi-Container Setup
-├── test.js              # 🧪 Test-Sequenzen
-├── package.json         # 📦 Dependencies & Scripts
-└── README.md           # 📖 Diese Datei
-```
-
 ## 🤝 Contributing
 
 1. **Fork** the repository
@@ -173,6 +140,6 @@ See [Development Guide](docs/development.md) for detailed contribution guideline
 
 ---
 
-# Built with ❤️ for the lighting community
+Built with ❤️ for the lighting community
 
 **[⬆ Back to Top](#-dmx-controller-agent)**
