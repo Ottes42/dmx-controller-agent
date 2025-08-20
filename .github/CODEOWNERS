@@ -1,0 +1,34 @@
+# Code ownership for automatic review assignments
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global ownership - all files
+* @Ottes42
+
+# Device drivers and hardware integration
+devices/ @Ottes42
+
+# Core API and server code
+src/ @Ottes42
+
+# Tests require review to ensure quality
+tests/ @Ottes42
+jest.config.js @Ottes42
+
+# CI/CD workflows are critical
+.github/workflows/ @Ottes42
+.github/dependabot.yml @Ottes42
+
+# Docker configuration
+Dockerfile @Ottes42
+.dockerignore @Ottes42
+
+# Package management and dependencies
+package.json @Ottes42
+package-lock.json @Ottes42
+
+# Documentation updates
+docs/ @Ottes42
+README.MD @Ottes42
+
+# Security-sensitive files
+.github/workflows/security.yml @Ottes42

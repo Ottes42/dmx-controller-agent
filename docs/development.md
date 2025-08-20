@@ -207,12 +207,16 @@ git push origin feature/new-animation
 
 ### 2. Code Review Checklist
 
-- [ ] **Standard.js compliant** (automatically checked)
-- [ ] **Tests pass** (`npm test`)
+- [ ] **Standard.js compliant** (automatically checked by CI)
+- [ ] **Tests pass** (`npm test` - verified by CI)
+- [ ] **Coverage maintained** (coverage reports in CI)
+- [ ] **Security scan passed** (automatic vulnerability scanning)
 - [ ] **API endpoints documented** (in `docs/api.md`)
 - [ ] **New effects documented** (in `docs/effects.md`)
 - [ ] **Integration examples** (if applicable)
 - [ ] **Backward compatible** (existing API unchanged)
+- [ ] **Docker build successful** (verified by CI)
+- [ ] **Performance impact assessed** (automatic benchmarking)
 
 ### 3. Release Process
 
@@ -220,13 +224,63 @@ git push origin feature/new-animation
 # Update version
 npm version patch  # or minor/major
 
-# Tag release
+# Tag release (triggers automated release workflow)
 git tag v1.0.1
 git push origin v1.0.1
 
-# Publish (if public)
-npm publish
+# Automated release process will:
+# - Create GitHub release with changelog
+# - Build and publish Docker images
+# - Generate release archives
+# - Upload release assets
 ```
+
+## 🚀 CI/CD Pipeline
+
+### GitHub Actions Workflows
+
+The project includes comprehensive CI/CD automation:
+
+**🔍 Code Quality** (`ci.yml`)
+- Linting with Standard.js
+- Multi-version Node.js testing (18, 20, 22)
+- Coverage reporting with Codecov integration
+- Build verification and artifact creation
+
+**🐳 Docker** (`docker.yml`) 
+- Multi-architecture container builds (amd64, arm64)
+- Container testing and health checks
+- Automated publishing to GitHub Container Registry
+
+**🔒 Security** (`security.yml`)
+- Daily dependency vulnerability scans
+- CodeQL static analysis
+- Docker image security scanning with Trivy
+
+**📦 Release** (`release.yml`)
+- Automated release creation from version tags
+- Changelog generation from commits
+- Release asset preparation and upload
+- Docker image tagging and publishing
+
+**⚡ Performance** (`performance.yml`)
+- API endpoint benchmarking
+- Memory and CPU profiling
+- Performance regression detection
+
+**🏷️ Automation** (`label.yml`, `stale.yml`)
+- Automatic PR labeling by file changes
+- Size-based labeling
+- Stale issue/PR cleanup
+
+### Monitoring & Reports
+
+- **Coverage**: Available in PR checks and Codecov
+- **Security**: GitHub Security tab for vulnerabilities
+- **Performance**: Weekly performance reports in Actions
+- **Dependencies**: Automated Dependabot updates
+
+For detailed workflow documentation, see `docs/github-actions.md`.
 
 ## 🐛 Debugging
 

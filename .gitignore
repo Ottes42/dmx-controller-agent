@@ -2,3 +2,33 @@ node_modules
 .env
 coverage/
 *.log
+
+# GitHub Actions artifacts and cache
+dist/
+build/
+release/
+
+# Performance and profiling reports  
+.clinic/
+perf-*.json
+performance-report.md
+audit-report.*
+
+# Security scan results
+trivy-results.*
+security-report.md
+
+# Docker
+.docker/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
