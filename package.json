@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "node test.js"
+    "test": "node test.js",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
+    "prepare": "husky install"
   },
   "keywords": [
     "dmx",
@@ -24,6 +27,24 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "husky": "^8.0.3",
+    "lint-staged": "^15.5.2",
+    "nodemon": "^3.1.10",
+    "standard": "^17.1.0"
+  },
+  "standard": {
+    "env": [
+      "node",
+      "browser"
+    ],
+    "globals": [
+      "fetch"
+    ]
+  },
+  "lint-staged": {
+    "*.js": [
+      "standard --fix",
+      "git add"
+    ]
   }
 }
