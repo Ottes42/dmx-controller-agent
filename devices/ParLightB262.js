@@ -1,7 +1,7 @@
 const Anim = require('dmx/anim')
 
 class ParLightB262 {
-  // Farb-Konstanten
+  // Color constants
   static COLORS = {
     RED: 'red',
     GREEN: 'green',
@@ -15,7 +15,7 @@ class ParLightB262 {
     OFF: 'off'
   }
 
-  // Modi-Konstanten
+  // Mode constants
   static MODES = {
     MANUAL: 0,
     HUE_SELECT: 35,
@@ -29,7 +29,7 @@ class ParLightB262 {
     this.universe = universe
     this.startChannel = startChannel
 
-    // Channel mapping (relativ zur Startadresse)
+    // Channel mapping (relative to start address)
     this.channels = {
       masterDimmer: startChannel,
       red: startChannel + 1,
@@ -40,7 +40,7 @@ class ParLightB262 {
       hueSpeed: startChannel + 6
     }
 
-    // Aktuelle Werte speichern
+    // Store current values
     this.currentState = {
       masterDimmer: 0,
       red: 0,
@@ -51,7 +51,7 @@ class ParLightB262 {
       hueSpeed: 0
     }
 
-    // Farbdefinitionen
+    // Color definitions
     this._colorDefinitions = {
       [ParLightB262.COLORS.RED]: [255, 0, 0],
       [ParLightB262.COLORS.GREEN]: [0, 255, 0],
@@ -81,7 +81,7 @@ class ParLightB262 {
     return this
   }
 
-  // Grundlegende Steuerung
+  // Basic control
   setMasterDimmer (value) {
     this.currentState.masterDimmer = this._clamp(value)
     this._updateChannels('masterDimmer')
@@ -106,21 +106,21 @@ class ParLightB262 {
     return this
   }
 
-  // Verbesserte Farbsteuerung mit Fehlerbehandlung
+  // Enhanced color control with error handling
   setColor (colorName, intensity = 255) {
-    // Normalisiere Eingabe zu lowercase
+    // Normalize input to lowercase
     const normalizedColor = colorName.toLowerCase()
 
-    // Prüfe ob Farbe existiert
+    // Check if color exists
     if (!this._colorDefinitions[normalizedColor]) {
       const availableColors = Object.values(ParLightB262.COLORS).join(', ')
-      throw new Error(`Unbekannte Farbe: '${colorName}'. Verfügbare Farben: ${availableColors}`)
+      throw new Error(`Unknown color: '${colorName}'. Available colors: ${availableColors}`)
     }
 
     intensity = this._clamp(intensity)
     const [r, g, b] = this._colorDefinitions[normalizedColor]
 
-    // Skaliere RGB-Werte mit Intensität
+    // Scale RGB values with intensity
     this.setRGB(
       Math.floor((r / 255) * intensity),
       Math.floor((g / 255) * intensity),
@@ -129,17 +129,17 @@ class ParLightB262 {
     return this
   }
 
-  // Statische Methode um alle verfügbaren Farben zu bekommen
+  // Static method to get all available colors
   static getAvailableColors () {
     return Object.values(ParLightB262.COLORS)
   }
 
-  // Prüfen ob Farbe verfügbar ist
+  // Check if color is available
   static isValidColor (colorName) {
     return Object.values(ParLightB262.COLORS).includes(colorName.toLowerCase())
   }
 
-  // Modi mit Konstanten
+  // Modes with constants
   setManualMode () {
     this.currentState.mode = ParLightB262.MODES.MANUAL
     this._updateChannels('mode')
@@ -188,7 +188,7 @@ class ParLightB262 {
       : targetColor
 
     if (!targetRGB) {
-      throw new Error(`Ungültige Zielfarbe: ${targetColor}`)
+      throw new Error(`Invalid target color: ${targetColor}`)
     }
 
     const anim = new Anim()
@@ -234,7 +234,7 @@ class ParLightB262 {
       : color
 
     if (!pulseColor) {
-      throw new Error(`Ungültige Pulsfarbe: ${color}`)
+      throw new Error(`Invalid pulse color: ${color}`)
     }
 
     const anim = new Anim({ loop: Infinity })
@@ -262,7 +262,7 @@ class ParLightB262 {
       : color
 
     if (!strobeColor) {
-      throw new Error(`Ungültige Strobfarbe: ${color}`)
+      throw new Error(`Invalid strobe color: ${color}`)
     }
 
     const anim = new Anim({ loop: Infinity })

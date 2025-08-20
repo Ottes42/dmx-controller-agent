@@ -1,6 +1,6 @@
 # 🎭 DMX Controller Agent
 
-Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interface und REST API.
+Node.js-based DMX controller for Par Light B262 fixtures with web interface and REST API.
 
 ## 📑 Table of Contents
 
@@ -9,7 +9,7 @@ Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interf
   - [✨ Features](#-features)
   - [🚀 Quick Start](#-quick-start)
     - [Native Installation](#native-installation)
-    - [Docker (Empfohlen für Produktion)](#docker-empfohlen-für-produktion)
+    - [Docker (Recommended for Production)](#docker-recommended-for-production)
   - [📚 Dokumentation](#-dokumentation)
   - [⚙️ Hardware](#️-hardware)
   - [🖥️ Plattformen](#️-plattformen)
@@ -24,11 +24,11 @@ Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interf
 
 ## ✨ Features
 
-- 🌐 **Web-Interface** für intuitive manuelle Steuerung
-- 🔌 **REST API** für programmatische Integration  
-- 🎨 **6 Animationstypen** mit 25+ Easing-Funktionen
-- 📱 **Responsive Design** für Mobile/Desktop
-- 🐳 **Docker Support** für einfache Bereitstellung
+- 🌐 **Web Interface** for intuitive manual control
+- 🔌 **REST API** for programmatic integration  
+- 🎨 **6 Animation Types** with 25+ easing functions
+- 📱 **Responsive Design** for Mobile/Desktop
+- 🐳 **Docker Support** for easy deployment
 
 ## 🚀 Quick Start
 
@@ -44,7 +44,7 @@ npm start
 open http://localhost:3000
 ```
 
-### Docker (Empfohlen für Produktion)
+### Docker (Recommended for Production)
 ```bash
 # Mit Docker Compose
 docker-compose up -d

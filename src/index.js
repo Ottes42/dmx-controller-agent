@@ -27,9 +27,9 @@ app.get('/', (req, res) => {
 
 // Start server
 const server = app.listen(port, () => {
-  console.log(`🎭 DMX Web Controller läuft auf http://localhost:${port}`)
+  console.log(`🎭 DMX Web Controller running on http://localhost:${port}`)
   console.log(`📡 DMX Interface: ${dmxDevice}`)
-  console.log('⚡ Bereit für Lichtsteuerung!')
+  console.log('⚡ Ready for lighting control!')
 })
 
 // Graceful shutdown handling
@@ -37,37 +37,37 @@ process.on('SIGTERM', gracefulShutdown)
 process.on('SIGINT', gracefulShutdown)
 
 function gracefulShutdown (signal) {
-  console.log(`\n🔄 ${signal} empfangen. Shutdown wird eingeleitet...`)
+  console.log(`\n🔄 ${signal} received. Initiating shutdown...`)
 
   // Stop any running animations
   if (parLight.isAnimating()) {
-    console.log('🛑 Stoppe laufende Animationen...')
+    console.log('🛑 Stopping running animations...')
     parLight.stopAnimation()
   }
 
   // Turn off light
-  console.log('💡 Schalte Licht aus...')
+  console.log('💡 Turning off light...')
   parLight.turnOff()
 
   // Close server
   server.close((err) => {
     if (err) {
-      console.error('❌ Fehler beim Schließen des Servers:', err)
+      console.error('❌ Error during server shutdown:', err)
       process.exit(1)
     }
 
-    console.log('✅ Server erfolgreich geschlossen')
+    console.log('✅ Server closed successfully')
 
     // Give DMX time to send final commands
     setTimeout(() => {
-      console.log('👋 DMX Controller beendet')
+      console.log('👋 DMX Controller terminated')
       process.exit(0)
     }, 500)
   })
 
   // Force exit after 5 seconds if graceful shutdown fails
   setTimeout(() => {
-    console.error('⏰ Graceful shutdown timeout - erzwinge Beendigung')
+    console.error('⏰ Graceful shutdown timeout - forcing termination')
     process.exit(1)
   }, 5000)
 }

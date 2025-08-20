@@ -1,7 +1,7 @@
 {
   "name": "dmx-controller-agent",
   "version": "1.0.0",
-  "description": "DMX Controller Agent für Par Light B262 mit Web-Interface und REST API",
+  "description": "DMX Controller Agent for Par Light B262 with Web Interface and REST API",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
