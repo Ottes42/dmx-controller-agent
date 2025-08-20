@@ -18,6 +18,7 @@ Node.js-basierter DMX Controller für Par Light B262 Scheinwerfer mit Web-Interf
   - [📁 Project Structure](#-project-structure)
   - [🤝 Contributing](#-contributing)
   - [📄 License](#-license)
+- [Built with ❤️ for the lighting community](#built-with-️-for-the-lighting-community)
 
 ## ✨ Features
 
@@ -98,6 +99,7 @@ curl http://localhost:3000/api/status
 ## 🏗️ Integration
 
 Designed for use with:
+
 - **n8n** workflows
 - **Discord/Telegram** bots
 - **Home automation** systems
@@ -150,10 +152,6 @@ See [Development Guide](docs/development.md) for detailed contribution guideline
 
 ---
 
-<div align="center">
-
-*Built with ❤️ for the lighting community*
+# Built with ❤️ for the lighting community
 
 **[⬆ Back to Top](#-dmx-controller-agent)**
-
-</div>
