@@ -1,5 +1,5 @@
 const DMX = require('dmx')
-const ParLightB262 = require('./devices/ParLightB262')
+const ParLightB262 = require('../devices/ParLightB262')
 
 const dmx = new DMX()
 const universe = dmx.addUniverse('ottes', 'enttec-open-usb-dmx', 'COM5')

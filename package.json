@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "node test.js",
+    "test": "node scripts/test.js",
     "lint": "standard",
     "lint:fix": "standard --fix",
     "prepare": "husky install"
