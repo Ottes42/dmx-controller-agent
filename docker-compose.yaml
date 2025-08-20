@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   dmx-controller:
     build: .
@@ -9,6 +7,8 @@ services:
     devices:
       # Map USB DMX device - adjust device path as needed
       - "/dev/ttyUSB0:/dev/ttyUSB0"
+    group_add:
+      - "dialout"      # oder die GID der dialout-Gruppe
     environment:
       - PORT=3000
       - DMX_DEVICE=/dev/ttyUSB0
