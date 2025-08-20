@@ -53,24 +53,28 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{ github.event_name == 'pull_request' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}
         push: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-        outputs: type=docker,dest=/tmp/dmx-controller.tar
+        load: ${{ github.event_name == 'pull_request' }}
 
-    - name: Load and test Docker image
+    - name: Test Docker image (PR only)
+      if: github.event_name == 'pull_request'
       run: |
-        docker load --input /tmp/dmx-controller.tar
-        
-        # Get the first tag from the metadata
+        # Get the first tag from the metadata for single-platform testing
         IMAGE_TAG=$(echo '${{ steps.meta.outputs.tags }}' | head -n1)
         echo "Testing image: $IMAGE_TAG"
         
-        # Test container starts and health check passes
-        echo "🐳 Starting container for testing..."
+        # Basic functionality tests
+        echo "🐳 Testing container functionality..."
+        docker run --rm "$IMAGE_TAG" node --version
+        docker run --rm "$IMAGE_TAG" npm --version
+        
+        # Test that the application can start (with timeout)
+        echo "🏥 Testing application startup..."
         CONTAINER_ID=$(docker run -d -p 3000:3000 --name dmx-test "$IMAGE_TAG")
         
         # Wait for container to be ready
@@ -78,19 +82,20 @@ jobs:
         sleep 10
         
         # Test health endpoint
-        echo "🏥 Testing health endpoint..."
-        if docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/health; then
+        if docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/health 2>/dev/null; then
           echo "✅ Health check passed"
         else
-          echo "❌ Health check failed"
+          echo "❌ Health check failed, checking logs..."
           docker logs "$CONTAINER_ID"
+          docker stop "$CONTAINER_ID"
+          docker rm "$CONTAINER_ID"
           exit 1
         fi
         
         # Test basic API endpoints
         echo "🧪 Testing API endpoints..."
-        docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/colors
-        docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/status
+        docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/colors >/dev/null
+        docker exec "$CONTAINER_ID" wget -q -O - http://localhost:3000/api/status >/dev/null
         
         # Cleanup
         docker stop "$CONTAINER_ID"
@@ -109,9 +114,3 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Upload Docker image artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: docker-image
-        path: /tmp/dmx-controller.tar
-        retention-days: 7
