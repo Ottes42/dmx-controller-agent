@@ -7,9 +7,7 @@ WORKDIR /app
 RUN addgroup -g 1001 -S dmx && \
     adduser -u 1001 -S -G dmx dmx
 
-# Install system dependencies for USB access
-RUN apk add --no-cache \
-    eudev
+# Install system dependencies (USB devices handled at runtime)
 
 # Copy package files
 COPY package*.json ./

@@ -136,6 +136,7 @@ dmx/
 │   ├── api.md            # API Referenz
 │   ├── effects.md        # Effekte & Easing
 │   ├── docker.md         # Docker Deployment Guide
+│   ├── docker-hub-setup.md # Docker Hub CI/CD Setup
 │   ├── integrations.md   # Integration-Beispiele
 │   └── development.md    # Entwicklungsrichtlinien
 ├── public/               # 🌐 Web Interface
