@@ -99,6 +99,10 @@ jobs:
     name: Docker Security Scan
     runs-on: ubuntu-latest
     if: github.event_name != 'schedule'
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     
     steps:
     - name: Checkout code
