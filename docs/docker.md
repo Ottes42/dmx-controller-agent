@@ -266,8 +266,14 @@ networks:
 lsusb
 ls -la /dev/ttyUSB*
 
-# Add user to dialout group
+# Add user to dialout group (see USB Device Access section for complete setup)
 sudo usermod -a -G dialout $USER
+
+# For persistent permissions, create udev rule (recommended):
+echo 'KERNEL=="ttyUSB[0-9]*", GROUP="dialout", MODE="0660"' \
+| sudo tee /etc/udev/rules.d/99-usb-serial.rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 
 # Docker compose
 docker-compose -f docker-compose.yml up -d
@@ -346,6 +352,40 @@ docker run --privileged -v /dev:/dev dmx-controller
 # Create /etc/udev/rules.d/99-dmx.rules:
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="dmx-interface"
 ```
+
+### 🛠️ Host Permission Setup (Recommended)
+
+For proper USB device access without requiring privileged containers, configure host permissions:
+
+#### 1. Add User to dialout Group
+
+```bash
+# Add current user to dialout group
+sudo usermod -aG dialout $USER
+
+# Apply group membership immediately
+newgrp dialout
+```
+
+#### 2. Create udev Rules for USB-Serial Devices
+
+Create persistent permissions for all USB-to-serial devices:
+
+```bash
+# Create udev rule for automatic permissions
+echo 'KERNEL=="ttyUSB[0-9]*", GROUP="dialout", MODE="0660"' \
+| sudo tee /etc/udev/rules.d/99-usb-serial.rules
+
+# Reload udev rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+This ensures:
+- All new USB-serial devices get group `dialout` 
+- Permissions are set to `0660` (read/write for user and group)
+- No manual permission changes needed after device reconnection
+- Works with Docker's `group_add: ["dialout"]` configuration
 
 ## 📊 Monitoring & Logging
 
