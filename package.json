@@ -29,7 +29,7 @@
   "license": "ISC",
   "dependencies": {
     "dmx": "^0.25.1",
-    "dotenv": "^16.6.1",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0"
   },
   "devDependencies": {
