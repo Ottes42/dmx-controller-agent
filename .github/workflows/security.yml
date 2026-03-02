@@ -49,7 +49,7 @@ jobs:
         fi
 
     - name: Upload security reports
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: security-reports
         path: |
@@ -132,7 +132,7 @@ jobs:
         output: 'trivy-results.txt'
 
     - name: Upload security scan results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: always()
       with:
         name: docker-security-scan

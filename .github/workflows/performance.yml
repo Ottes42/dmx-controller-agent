@@ -120,7 +120,7 @@ jobs:
         fi
 
     - name: Upload performance results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: performance-reports
         path: |
@@ -165,7 +165,7 @@ jobs:
 
     - name: Upload profiling results
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: profiling-reports
         path: |
